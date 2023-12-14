@@ -1,0 +1,116 @@
+𝗔𝗕𝗦𝗢𝗟𝗨𝗧𝗘 𝗟𝗢𝗔𝗗𝗘𝗥 𝗔𝗟𝗚𝗢𝗥𝗜𝗧𝗛𝗠
+------------------------------
+1. Open the file "inp.txt" for reading.
+2. Read the first line to extract the program name (line).
+3. Extract program name from line and store it in name1.
+4. Print the extracted program name.
+5. Loop until the end of the file:
+    6. Read a line from the file.
+    7. If the line starts with 'T':
+        8. Extract the starting address (staddr) and convert it to an integer (staddr1).
+        9. Iterate through the line starting from index 12:
+            10. If the character is not '^':
+                11. Print the memory address and content in hexadecimal format.
+                12. Increment the memory address (staddr1).
+                13. Move index i by 2 to read the next pair of characters.
+            14. If the character is '^', skip it and move to the next character.
+    15. Read the next line.
+    16. If the line starts with 'E', close the file.
+
+
+𝗥𝗘𝗟𝗢𝗖𝗔𝗧𝗜𝗢𝗡 𝗟𝗢𝗔𝗗𝗘𝗥 𝗔𝗟𝗚𝗜
+-----------------------------
+1. Open the file "program.txt" for reading (objptr).
+2. Read the first record (rec).
+3. If the record is 'H':
+   4. Read program name (name), starting address (add), and program length (len).
+   5. Print the program name.
+6. Loop until the end record (E) is encountered:
+   7. If the record is 'T':
+      8. Read starting address (add), length (len), and bitmask from the record.
+      9. Convert bitmask to binary and store in the bit array.
+      10. Read the next record (rec).
+   11. If the bit at bitmask_index is '1':
+      12. Extract first and second parts of the record based on bitmask.
+      13. Convert the second part to hexadecimal and add the starting address (start).
+      14. Print the modified object code.
+   15. Increment address (add) by 3.
+   16. Increment bitmask_index.
+   17. Continue processing until the end record (E) is encountered.
+18. Close the file (objptr).
+
+𝗣𝗔𝗦𝗦2 𝗔𝗟𝗚𝗢
+----------------
+1. Open files for writing and reading (fp1, fp2, fp3, fp4).
+2. Read intermediate file to get final address (finaddr).
+3. If opcode is START:
+   4. Print header records in output (output.txt) and object code (objcode.txt).
+   5. Calculate difference between previous and start address.
+   6. Start processing instructions.
+7. Loop until opcode is END.
+   8. Process instructions based on opcode:
+      9. BYTE: Print object code for BYTE instruction.
+      10. WORD: Print object code for WORD instruction.
+      11. RESW, RESB: Print for RESW and RESB instructions.
+      12. Other instructions: Find mnemonic code, convert operands, and print object code.
+13. Display contents of intermediate files and object code.
+14. Close files (fp1, fp2, fp3, fp4).
+
+
+𝗟𝗙𝗨 𝗔𝗟𝗚𝗢
+-----------
+1. Declare variables (f, p, pages[50], frame[10], hit, count[50], time[50], i, j, flag, least, mintime, temp).
+2. Get number of frames (f) and number of pages (p) from the user.
+3. Initialize arrays for frames (frame[10]), page counts (count[50]), and page arrival time (time[50]).
+4. Get the reference page string (pages[50]) from the user.
+5. Set all values in frame array to -1.
+6. Set all values in count array to 0.
+7. Loop through each page in the reference string.
+   8. Increment count for the current page.
+   9. Update arrival time of current page.
+   10. Check if the page is in a frame or there is an empty frame:
+       11. If yes, mark as hit and update the frame.
+       12. If not, find least frequently used frame and replace with current page.
+   13. Print current state of frames.
+14. Print total page hits and page faults.
+
+𝗟𝗥𝗨 𝗔𝗟𝗚𝗢
+------------
+Algorithm: LRU Page Replacement
+
+Input:
+- n: Length of the page string
+- rs[30]: Array representing the reference page string
+- f: Number of frames
+
+Output:
+- Prints the pages in frames after each access
+- Prints the total number of page faults and hits at the end
+
+Procedure:
+1. Initialize:
+   - m[10]: Array representing frames, initially set to -1
+   - count: Counter for the number of frames filled, initially set to 0
+   - pf: Counter for page faults, initially set to 0
+   - least[10]: Array to store the age of each frame
+   - flag: Variable to check for page hits, initially set to 0
+   - temp, pos, i, j, k: Loop control variables
+
+2. For each page access rs[i] from the reference string:
+   - Set flag to 0 (indicating a page fault).
+   - Check if rs[i] is already in a frame:
+      - If yes, set flag to 1 (indicating a hit).
+   - If flag is 0 (page fault):
+      - Check if there is an available frame (count < f):
+         - If yes, fill the available frame with rs[i].
+         - Increment count.
+         - Increment pf.
+      - If no available frame:
+         - Calculate the age of each frame by checking when it was last used.
+         - Find the frame with the maximum age (least recently used).
+         - Replace the frame at the found position with rs[i].
+         - Increment pf.
+
+   - Print the pages in frames after the current access, marking a "Miss" if it's a page fault.
+
+3. Print the total number of page faults and hits.
